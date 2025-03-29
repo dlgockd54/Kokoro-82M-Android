@@ -528,9 +528,14 @@ class TtsPerformer {
 
             println("_hc 추론 소요 시간: ${inferenceDuration.inWholeMilliseconds}ms")
 
-            // 7. 결과 처리 (첫 번째 출력이 오디오 데이터라고 가정)
-            val audioOutputTensor =
-                results.get(0) as? OnnxTensor // 출력 이름이 다르면 이름으로 조회: results["output_name"]
+            // 7. 결과 처리
+            val resultOptional = results.get("waveform")
+
+            if (resultOptional.isEmpty) {
+                return null
+            }
+
+            val audioOutputTensor = resultOptional.get() as? OnnxTensor
             val audioData = audioOutputTensor?.floatBuffer?.let { buffer ->
                 val array = FloatArray(buffer.remaining())
                 buffer.get(array)
