@@ -2,6 +2,13 @@
 ## Speech로 변환할 텍스트 토큰화하기
 python 디렉터리의 generate_tokens.py 파일 내용에 변환하고 싶은 텍스트를 넣고 실행하여 토큰 배열을 얻을 수 있습니다.
 
+generate_tokens.py 파일을 실행하기 위해서는 phonemizer, espeak-ng를 설치 해야합니다.
+
+```shell
+pip install phonemizer
+brew install espeak-ng
+```
+
 ## ONNX 모델 선택하기
 assets/onnx 경로의 onnx 파일 중 추론에 사용할 모델 파일을 고르면 됩니다.
 
