@@ -540,7 +540,7 @@ class TtsPerformer {
                 val array = FloatArray(buffer.remaining())
                 buffer.get(array)
                 array
-            }
+            } // -1.0 ~ 1.0 사이의 값을 갖는 float 배열, 디지털 오디오 처리 분야에서 부동 소수점 형식으로 오디오 데이터를 다룰 떄, 진폭을 -1.0과 1.0 사이로 정규화 하는 것은 일반적인 관행
 
             // 사용한 텐서 및 결과 리소스 해제 (중요!)
             inputIdsTensor.close()
@@ -590,12 +590,14 @@ class TtsPerformer {
             }
             val outputFile = File(storageDir, outputFileName)
 
-            // 2. FloatArray -> ShortArray -> ByteArray 변환 (16-bit PCM)
-            val shortData = ShortArray(audioData.size)
+            // 2. FloatArray -> ShortArray -> ByteArray 변환 (16-bit PCM), 16-bit PCM은 -32768과 32767(-2^15 ~ 2^15-1) 사이의 정수 값을 사용
+            val shortData = ShortArray(audioData.size) // Short 2바이트 정수형
             for (i in audioData.indices) {
                 // Float (-1.0 ~ 1.0) -> Short (-32768 ~ 32767)
-                val shortVal =
-                    (audioData[i] * 32767.0f).coerceIn(-32768.0f, 32767.0f).toInt().toShort()
+                val shortVal = (audioData[i] * 32767.0f)
+                    .coerceIn(-32768.0f, 32767.0f)
+                    .toInt()
+                    .toShort() // -1 ~ 1 범위에 32767 을 곱하여 16비트의 최대 표현 범위로 확장
                 shortData[i] = shortVal
             }
 
