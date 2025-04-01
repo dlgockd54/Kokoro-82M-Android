@@ -2,6 +2,7 @@ package com.hclee.kokoro_82m_android.ui.theme
 
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment
+import ai.onnxruntime.OrtLoggingLevel
 import ai.onnxruntime.OrtSession
 import android.content.Context
 import android.os.Environment
@@ -424,7 +425,9 @@ class TtsPerformer {
         require(tokens.size <= 510) { "Token length exceeds 510: ${tokens.size}" }
 
         // 3. ONNX Runtime 환경 및 세션 생성
-        val ortEnvironment = OrtEnvironment.getEnvironment()
+        val ortEnvironment = OrtEnvironment.getEnvironment(
+            OrtLoggingLevel.ORT_LOGGING_LEVEL_VERBOSE,
+        )
         val sessionOptions = OrtSession.SessionOptions()
 
         // 모델 파일 로드 (assets 경로 주의)
